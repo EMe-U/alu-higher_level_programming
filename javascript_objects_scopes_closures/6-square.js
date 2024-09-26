@@ -1,13 +1,18 @@
 #!/usr/bin/node
-const Square = require('./5-square');
 
-class Square extends Square {
-  charPrint(c) {
-    const character = c || 'X'; // Use 'X' if c is undefined
+const OriginalSquare = require('./5-square');
+
+module.exports = class Square extends OriginalSquare {
+  charPrint (c) {
+    if (c === undefined) {
+      c = 'X';
+    }
     for (let i = 0; i < this.height; i++) {
-      console.log(character.repeat(this.width)); // Print the character repeated width times
+      let s = '';
+      for (let j = 0; j < this.width; j++) {
+        s += c;
+      }
+      console.log(s);
     }
   }
-}
-
-module.exports = Square;
+};
