@@ -3,7 +3,7 @@
 const request = require('request');
 
 const apiUrl = process.argv[2];
-const wedgeAntillesId = 18;
+const characterId = 18;
 
 request(apiUrl, (error, response, body) => {
   if (error) {
@@ -11,14 +11,20 @@ request(apiUrl, (error, response, body) => {
     return;
   }
 
-  const films = JSON.parse(body).results;
-  let count = 0;
+  try {
+    const films = JSON.parse(body).results;
+    let count = 0;
 
-  films.forEach(film => {
-    if (film.characters.includes(`https://swapi-api.alx-tools.com/api/people/${wedgeAntillesId}/`)) {
-      count++;
-    }
-  });
+    films.forEach((film) => {
+      film.characters.forEach((characterUrl) => {
+        if (characterUrl.includes(`/${characterId}/`)) {
+          count++;
+        }
+      });
+    });
 
-  console.log(count);
+    console.log(count);
+  } catch (parseError) {
+    console.error(parseError);
+  }
 });
